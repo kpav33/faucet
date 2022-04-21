@@ -11,7 +11,11 @@ contract Faucet {
   // which means they can be called via contracts and other transactions
 
     receive() external payable {}
+
+    function addFunds() external payable {}
 }
+
+ // const instance = await Faucet.deployed()
 
 // Block info
 // Nonce - a hash that when combined with the minHash proofs that
