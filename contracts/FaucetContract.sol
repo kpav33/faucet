@@ -4,7 +4,10 @@ pragma solidity >=0.4.22 <0.9.0;
 contract Faucet {
 
   // Create an array of addresses (20 byte address format)
-  address[] public funders;
+  // private -> can be accesible only within the smart contract
+  // internal -> can be accesible within smart contract and also derived smart contract
+  // address[] public funders;
+  address[] private funders;
 
   // this is a special function
   // it's called when you make a transaction that doesn't specify
