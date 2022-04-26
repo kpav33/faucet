@@ -1,7 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+import "./Owned.sol";
+import "./Logger.sol";
+import "./IFaucet.sol";
 
-contract Faucet {
+contract Faucet is Owned, Logger, IFaucet {
 
   // Create an array of addresses (20 byte address format)
   // private -> can be accesible only within the smart contract
@@ -10,19 +13,19 @@ contract Faucet {
   // address[] private funders;
 
     uint public numOfFunders;
-    address public owner;
+    // address public owner;
     // mapping(uint => address) private funders;
     mapping(address => bool) private funders;
     mapping(uint => address) private lutFunders;
 
-    constructor() {
-      owner = msg.sender;
-    }
+    // constructor() {
+    //   owner = msg.sender;
+    // }
 
-    modifier onlyOwner {
-      require(msg.sender == owner, "Only owner can call this function");
-      _;
-    }
+    // modifier onlyOwner {
+    //   require(msg.sender == owner, "Only owner can call this function");
+    //   _;
+    // }
 
 
     modifier limitWithdraw(uint withdrawAmount) {
@@ -39,12 +42,17 @@ contract Faucet {
 
     receive() external payable {}
 
+    
+    function emitLog() public override pure returns(bytes32) {
+      return "Hello World";
+    }
+
     function transferOwnership(address newOwner) external onlyOwner {
       owner = newOwner;
     }
 
     // Payable functions can process transactions
-    function addFunds() external payable {
+    function addFunds() override external payable {
       // Push the senders address into the funders array
       // funders.push(msg.sender);
       // uint index = numOfFunders++;
@@ -76,7 +84,7 @@ contract Faucet {
     //   payable(msg.sender).transfer(withdrawAmount);
     // }
 
-    function withdraw(uint withdrawAmount) external limitWithdraw(withdrawAmount) {
+    function withdraw(uint withdrawAmount) override external limitWithdraw(withdrawAmount) {
       payable(msg.sender).transfer(withdrawAmount);
     }
 
